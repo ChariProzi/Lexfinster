@@ -16,6 +16,18 @@ import Docket from './pages/matters/Docket'
 import MatterDocuments from './pages/matters/MatterDocuments'
 import Checklist from './pages/matters/Checklist'
 import ClientRecord from './pages/matters/ClientRecord'
+import OrdersAndHearings from './pages/matters/OrdersAndHearings'
+import CauseLists from './pages/court/CauseLists'
+import OrderInbox from './pages/court/OrderInbox'
+import OrderReview from './pages/court/OrderReview'
+import ManualUpload from './pages/court/ManualUpload'
+import CourtDataHealth from './pages/court/CourtDataHealth'
+import AllocateWork from './pages/work/AllocateWork'
+import MyWorklist from './pages/work/MyWorklist'
+import TaskCreate from './pages/work/TaskCreate'
+import TaskExecution from './pages/work/TaskExecution'
+import ReviewQueue from './pages/work/ReviewQueue'
+import TeamWorkload from './pages/work/TeamWorkload'
 
 export default function App() {
   return (
@@ -36,23 +48,23 @@ export default function App() {
         <Route path="/matters/:matterId/deadlines/:deadlineId/why" element={<RuleExplainer />} />
         <Route path="/matters/:matterId/deadlines/:deadlineId/override" element={<Override />} />
         <Route path="/matters/:matterId/docket" element={<Docket />} />
-        <Route path="/matters/:matterId/orders" element={<PlaceholderRoute />} />
+        <Route path="/matters/:matterId/orders" element={<OrdersAndHearings />} />
         <Route path="/matters/:matterId/documents" element={<MatterDocuments />} />
         <Route path="/matters/:matterId/checklist" element={<Checklist />} />
         <Route path="/clients/:clientId" element={<ClientRecord />} />
 
-        <Route path="/work/allocate" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/work/my-worklist" element={<PlaceholderRoute />} />
-        <Route path="/work/tasks/new" element={<PlaceholderRoute />} />
-        <Route path="/work/tasks/:taskId" element={<PlaceholderRoute />} />
-        <Route path="/work/review-queue" element={<PlaceholderRoute />} />
-        <Route path="/work/team-workload" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
+        <Route path="/work/allocate" element={<RequireRole roles={['Admin', 'Partner']}><AllocateWork /></RequireRole>} />
+        <Route path="/work/my-worklist" element={<MyWorklist />} />
+        <Route path="/work/tasks/new" element={<TaskCreate />} />
+        <Route path="/work/tasks/:taskId" element={<TaskExecution />} />
+        <Route path="/work/review-queue" element={<ReviewQueue />} />
+        <Route path="/work/team-workload" element={<RequireRole roles={['Admin', 'Partner']}><TeamWorkload /></RequireRole>} />
 
-        <Route path="/court/cause-lists" element={<PlaceholderRoute />} />
-        <Route path="/court/order-inbox" element={<PlaceholderRoute />} />
-        <Route path="/court/order-inbox/:orderId" element={<PlaceholderRoute />} />
-        <Route path="/court/upload" element={<PlaceholderRoute />} />
-        <Route path="/court/data-health" element={<PlaceholderRoute />} />
+        <Route path="/court/cause-lists" element={<CauseLists />} />
+        <Route path="/court/order-inbox" element={<OrderInbox />} />
+        <Route path="/court/order-inbox/:orderId" element={<OrderReview />} />
+        <Route path="/court/upload" element={<ManualUpload />} />
+        <Route path="/court/data-health" element={<CourtDataHealth />} />
 
         <Route path="/documents" element={<PlaceholderRoute />} />
         <Route path="/documents/:documentId" element={<PlaceholderRoute />} />

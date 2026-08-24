@@ -31,6 +31,12 @@ export async function listOrderInbox(userId: string): Promise<Order[]> {
   return db().orders.filter((o) => visible.has(o.matterId))
 }
 
+export async function listMatterOrders(userId: string, matterId: string): Promise<Order[]> {
+  await sleep()
+  assertCaseAccess(userId, matterId)
+  return db().orders.filter((o) => o.matterId === matterId)
+}
+
 export async function getOrder(userId: string, orderId: string): Promise<Order> {
   await sleep()
   const order = db().orders.find((o) => o.id === orderId)
