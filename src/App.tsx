@@ -28,6 +28,14 @@ import TaskCreate from './pages/work/TaskCreate'
 import TaskExecution from './pages/work/TaskExecution'
 import ReviewQueue from './pages/work/ReviewQueue'
 import TeamWorkload from './pages/work/TeamWorkload'
+import DocumentManager from './pages/documents/DocumentManager'
+import DocumentUpload from './pages/documents/DocumentUpload'
+import DocumentViewer from './pages/documents/DocumentViewer'
+import NotificationCentre from './pages/notifications/NotificationCentre'
+import UsersAndRoles from './pages/admin/UsersAndRoles'
+import AuditLog from './pages/admin/AuditLog'
+import RulePacks from './pages/admin/RulePacks'
+import AtRiskReport from './pages/reports/AtRiskReport'
 
 export default function App() {
   return (
@@ -66,9 +74,9 @@ export default function App() {
         <Route path="/court/upload" element={<ManualUpload />} />
         <Route path="/court/data-health" element={<CourtDataHealth />} />
 
-        <Route path="/documents" element={<PlaceholderRoute />} />
-        <Route path="/documents/:documentId" element={<PlaceholderRoute />} />
-        <Route path="/documents/upload" element={<PlaceholderRoute />} />
+        <Route path="/documents" element={<DocumentManager />} />
+        <Route path="/documents/:documentId" element={<DocumentViewer />} />
+        <Route path="/documents/upload" element={<DocumentUpload />} />
         <Route path="/documents/naming-rules" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
         <Route path="/drafts" element={<PlaceholderRoute />} />
         <Route path="/drafts/:draftId" element={<PlaceholderRoute />} />
@@ -88,16 +96,16 @@ export default function App() {
         <Route path="/forum/library" element={<PlaceholderRoute />} />
         <Route path="/forum/library/:entryId" element={<PlaceholderRoute />} />
 
-        <Route path="/notifications" element={<PlaceholderRoute />} />
+        <Route path="/notifications" element={<NotificationCentre />} />
         <Route path="/settings/notifications" element={<PlaceholderRoute />} />
 
         <Route path="/reports" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/reports/at-risk" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
+        <Route path="/reports/at-risk" element={<RequireRole roles={['Admin', 'Partner']}><AtRiskReport /></RequireRole>} />
 
-        <Route path="/admin/users" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
+        <Route path="/admin/users" element={<RequireRole roles={['Admin']}><UsersAndRoles /></RequireRole>} />
         <Route path="/admin/case-access" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/admin/audit-log" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/admin/rule-packs" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
+        <Route path="/admin/audit-log" element={<RequireRole roles={['Admin']}><AuditLog /></RequireRole>} />
+        <Route path="/admin/rule-packs" element={<RequireRole roles={['Admin']}><RulePacks /></RequireRole>} />
         <Route path="/admin/holiday-calendars" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
         <Route path="/admin/escalation-rules" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
         <Route path="/admin/data-retention" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
