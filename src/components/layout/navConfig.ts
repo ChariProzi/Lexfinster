@@ -73,6 +73,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'Open Questions', href: '/forum', icon: MessageSquareText, moduleKey: 'forum', badgeKey: 'openQuestions' },
       { label: 'My Research', href: '/forum/my-research', icon: ClipboardList, moduleKey: 'forum' },
+      { label: 'Clearance Queue', href: '/forum/clearance-queue', icon: ShieldCheck, moduleKey: 'forum', roles: ['Admin', 'Partner'] },
       { label: 'Research Library', href: '/forum/library', icon: Library, moduleKey: 'forum' },
     ],
   },

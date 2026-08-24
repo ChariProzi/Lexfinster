@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { CheckCheck } from 'lucide-react'
+import { CheckCheck, Settings2 } from 'lucide-react'
 import { listNotifications, markAllRead, markRead } from '../../api/notifications'
 import { useSession } from '../../lib/session'
 import { useDb } from '../../data/db'
@@ -42,7 +42,12 @@ export default function NotificationCentre() {
       <PageHeader
         title="Notifications"
         description={unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
-        actions={unreadCount > 0 ? <Button variant="secondary" loading={markAllMutation.isPending} onClick={() => markAllMutation.mutate()}><CheckCheck className="h-3.5 w-3.5" />Mark all read</Button> : undefined}
+        actions={
+          <>
+            {unreadCount > 0 && <Button variant="secondary" loading={markAllMutation.isPending} onClick={() => markAllMutation.mutate()}><CheckCheck className="h-3.5 w-3.5" />Mark all read</Button>}
+            <Button variant="ghost" onClick={() => navigate('/settings/notifications')}><Settings2 className="h-3.5 w-3.5" />Preferences</Button>
+          </>
+        }
       />
       <div className="mb-3">
         <Tabs tabs={CATEGORIES.map((c) => ({ key: c.key, label: c.label, count: c.key === 'All' ? undefined : all.filter((n) => n.category === c.key && !n.readAt).length }))} active={tab} onChange={setTab} />

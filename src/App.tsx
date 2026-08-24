@@ -3,6 +3,7 @@ import { AppShell } from './components/layout/AppShell'
 import { RequireRole } from './components/layout/RequireRole'
 import Login from './pages/auth/Login'
 import PlaceholderRoute from './pages/Placeholder'
+import More from './pages/More'
 import MyDay from './pages/today/MyDay'
 import Dashboard from './pages/dashboard/Dashboard'
 import AllMatters from './pages/matters/AllMatters'
@@ -32,10 +33,28 @@ import DocumentManager from './pages/documents/DocumentManager'
 import DocumentUpload from './pages/documents/DocumentUpload'
 import DocumentViewer from './pages/documents/DocumentViewer'
 import NotificationCentre from './pages/notifications/NotificationCentre'
+import NotificationPreferences from './pages/notifications/NotificationPreferences'
 import UsersAndRoles from './pages/admin/UsersAndRoles'
 import AuditLog from './pages/admin/AuditLog'
 import RulePacks from './pages/admin/RulePacks'
 import AtRiskReport from './pages/reports/AtRiskReport'
+import NamingRules from './pages/documents/NamingRules'
+import MyDrafts from './pages/documents/MyDrafts'
+import DraftWorkspace from './pages/documents/DraftWorkspace'
+import ForumIndex from './pages/forum/ForumIndex'
+import AskQuestion from './pages/forum/AskQuestion'
+import QuestionDetail from './pages/forum/QuestionDetail'
+import MyResearch from './pages/forum/MyResearch'
+import ResearchTaskDetail from './pages/forum/ResearchTaskDetail'
+import ClearanceQueue from './pages/forum/ClearanceQueue'
+import ResearchLibrary from './pages/forum/ResearchLibrary'
+import LibraryEntryDetail from './pages/forum/LibraryEntryDetail'
+import CaseAccess from './pages/admin/CaseAccess'
+import EscalationRules from './pages/admin/EscalationRules'
+import HolidayCalendars from './pages/admin/HolidayCalendars'
+import FirmSettings from './pages/admin/FirmSettings'
+import SopTemplateEditor from './pages/admin/SopTemplateEditor'
+import DataRetention from './pages/admin/DataRetention'
 
 export default function App() {
   return (
@@ -46,7 +65,7 @@ export default function App() {
         <Route index element={<Navigate to="/today" replace />} />
         <Route path="/today" element={<MyDay />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/more" element={<PlaceholderRoute />} />
+        <Route path="/more" element={<More />} />
 
         <Route path="/matters" element={<AllMatters />} />
         <Route path="/matters/board" element={<Board />} />
@@ -77,9 +96,9 @@ export default function App() {
         <Route path="/documents" element={<DocumentManager />} />
         <Route path="/documents/:documentId" element={<DocumentViewer />} />
         <Route path="/documents/upload" element={<DocumentUpload />} />
-        <Route path="/documents/naming-rules" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/drafts" element={<PlaceholderRoute />} />
-        <Route path="/drafts/:draftId" element={<PlaceholderRoute />} />
+        <Route path="/documents/naming-rules" element={<RequireRole roles={['Admin']}><NamingRules /></RequireRole>} />
+        <Route path="/drafts" element={<MyDrafts />} />
+        <Route path="/drafts/:draftId" element={<DraftWorkspace />} />
 
         <Route path="/offline/bundles" element={<PlaceholderRoute />} />
         <Route path="/offline/court-mode/:forumId" element={<PlaceholderRoute />} />
@@ -87,30 +106,30 @@ export default function App() {
         <Route path="/offline/storage-settings" element={<PlaceholderRoute />} />
         <Route path="/offline-unavailable" element={<PlaceholderRoute />} />
 
-        <Route path="/forum" element={<PlaceholderRoute />} />
-        <Route path="/forum/ask" element={<PlaceholderRoute />} />
-        <Route path="/forum/questions/:questionId" element={<PlaceholderRoute />} />
-        <Route path="/forum/my-research" element={<PlaceholderRoute />} />
-        <Route path="/forum/research/:taskId" element={<PlaceholderRoute />} />
-        <Route path="/forum/clearance-queue" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/forum/library" element={<PlaceholderRoute />} />
-        <Route path="/forum/library/:entryId" element={<PlaceholderRoute />} />
+        <Route path="/forum" element={<ForumIndex />} />
+        <Route path="/forum/ask" element={<AskQuestion />} />
+        <Route path="/forum/questions/:questionId" element={<QuestionDetail />} />
+        <Route path="/forum/my-research" element={<MyResearch />} />
+        <Route path="/forum/research/:taskId" element={<ResearchTaskDetail />} />
+        <Route path="/forum/clearance-queue" element={<RequireRole roles={['Admin', 'Partner']}><ClearanceQueue /></RequireRole>} />
+        <Route path="/forum/library" element={<ResearchLibrary />} />
+        <Route path="/forum/library/:entryId" element={<LibraryEntryDetail />} />
 
         <Route path="/notifications" element={<NotificationCentre />} />
-        <Route path="/settings/notifications" element={<PlaceholderRoute />} />
+        <Route path="/settings/notifications" element={<NotificationPreferences />} />
 
         <Route path="/reports" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
         <Route path="/reports/at-risk" element={<RequireRole roles={['Admin', 'Partner']}><AtRiskReport /></RequireRole>} />
 
         <Route path="/admin/users" element={<RequireRole roles={['Admin']}><UsersAndRoles /></RequireRole>} />
-        <Route path="/admin/case-access" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
+        <Route path="/admin/case-access" element={<RequireRole roles={['Admin', 'Partner']}><CaseAccess /></RequireRole>} />
         <Route path="/admin/audit-log" element={<RequireRole roles={['Admin']}><AuditLog /></RequireRole>} />
         <Route path="/admin/rule-packs" element={<RequireRole roles={['Admin']}><RulePacks /></RequireRole>} />
-        <Route path="/admin/holiday-calendars" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/admin/escalation-rules" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/admin/data-retention" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/admin/firm-settings" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
-        <Route path="/admin/sop-templates/:templateId" element={<RequireRole roles={['Admin']}><PlaceholderRoute /></RequireRole>} />
+        <Route path="/admin/holiday-calendars" element={<RequireRole roles={['Admin']}><HolidayCalendars /></RequireRole>} />
+        <Route path="/admin/escalation-rules" element={<RequireRole roles={['Admin']}><EscalationRules /></RequireRole>} />
+        <Route path="/admin/data-retention" element={<RequireRole roles={['Admin']}><DataRetention /></RequireRole>} />
+        <Route path="/admin/firm-settings" element={<RequireRole roles={['Admin']}><FirmSettings /></RequireRole>} />
+        <Route path="/admin/sop-templates/:templateId" element={<RequireRole roles={['Admin']}><SopTemplateEditor /></RequireRole>} />
 
         <Route path="/onboarding/firm-setup" element={<PlaceholderRoute />} />
         <Route path="/onboarding/invite" element={<PlaceholderRoute />} />
