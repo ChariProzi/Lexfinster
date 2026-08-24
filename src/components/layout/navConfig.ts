@@ -2,7 +2,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   LayoutDashboard, Sun, FolderKanban, Kanban, CalendarDays, Gavel, ScrollText, ListChecks,
   ClipboardList, Users2, FolderOpen, FileEdit, WifiOff, MessageSquareText, Library, Bell,
-  BarChart3, ShieldCheck, Settings2, RefreshCw, HardDrive,
+  BarChart3, ShieldCheck, Settings2, RefreshCw, HardDrive, CalendarClock, LayoutGrid,
 } from 'lucide-react'
 import type { Role } from '../../data/types'
 
@@ -27,6 +27,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, moduleKey: 'home' },
       { label: 'My Day', href: '/today', icon: Sun, moduleKey: 'home' },
+      { label: 'Calendar', href: '/calendar', icon: CalendarClock, moduleKey: 'home' },
     ],
   },
   {
@@ -52,6 +53,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { label: 'My Worklist', href: '/work/my-worklist', icon: ListChecks, moduleKey: 'work' },
       { label: 'Review Queue', href: '/work/review-queue', icon: ShieldCheck, moduleKey: 'work' },
       { label: 'Team Workload', href: '/work/team-workload', icon: Users2, moduleKey: 'work', roles: ['Admin', 'Partner'] },
+      { label: 'All Allocated Work', href: '/work/all-allocated', icon: ListChecks, moduleKey: 'work', roles: ['Admin', 'Partner'] },
     ],
   },
   {
@@ -88,6 +90,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Admin', moduleKey: 'admin',
     items: [
+      { label: 'Admin Home', href: '/admin', icon: LayoutGrid, moduleKey: 'admin' },
       { label: 'Users & Roles', href: '/admin/users', icon: Users2, moduleKey: 'admin' },
       { label: 'Case Access', href: '/admin/case-access', icon: ShieldCheck, moduleKey: 'admin' },
       { label: 'Audit Log', href: '/admin/audit-log', icon: ScrollText, moduleKey: 'admin' },

@@ -466,6 +466,23 @@ export interface ResearchLibraryEntry {
   stillGoodLawReviewDate?: string
 }
 
+/** A discrepancy an Intern (or anyone view-limited) raises against a calendar event instead of editing it directly. */
+export type CalendarFlagStatus = 'Open' | 'Resolved'
+export interface CalendarFlag {
+  id: string
+  matterId: string
+  eventKind: 'hearing' | 'deadline'
+  eventLabel: string
+  eventDate: string
+  note: string
+  raisedByUserId: string
+  raisedAt: string
+  status: CalendarFlagStatus
+  resolvedByUserId?: string
+  resolvedAt?: string
+  resolutionNote?: string
+}
+
 export interface AuditLogEntry {
   id: string
   timestamp: string

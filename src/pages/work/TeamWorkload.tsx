@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
+import { ListChecks, ArrowRight } from 'lucide-react'
 import { teamWorkload } from '../../api/work'
 import { useSession } from '../../lib/session'
 import { SixState } from '../../components/shared/SixState'
-import { PageHeader, Avatar, Badge } from '../../components/ui/primitives'
+import { PageHeader, Avatar, Badge, Button } from '../../components/ui/primitives'
 import { ROLE_LABEL } from '../../lib/rbac'
 import type { Role } from '../../data/types'
 
@@ -10,11 +12,16 @@ const STATUS_ORDER = ['ToDo', 'InProgress', 'Blocked', 'InReview', 'Returned'] a
 
 export default function TeamWorkload() {
   const userId = useSession((s) => s.userId)!
+  const navigate = useNavigate()
   const query = useQuery({ queryKey: ['team-workload', userId], queryFn: () => teamWorkload(userId) })
 
   return (
     <div>
-      <PageHeader title="Team Workload" description="Open tasks per person, across matters you can see." />
+      <PageHeader
+        title="Team Workload"
+        description="Open tasks per person, across matters you can see."
+        actions={<Button variant="secondary" onClick={() => navigate('/work/all-allocated')}><ListChecks className="h-3.5 w-3.5" />Manage all allocated work<ArrowRight className="h-3.5 w-3.5" /></Button>}
+      />
       <SixState query={query} onRetry={() => query.refetch()}>
         <div className="rounded-lg border border-ink-200 bg-paper">
           {(query.data ?? []).map((row) => {

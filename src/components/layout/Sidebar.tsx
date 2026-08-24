@@ -94,6 +94,7 @@ export function Sidebar() {
 function InternNav({ questionBadge, collapsed }: { questionBadge: number; collapsed: boolean }) {
   const items = [
     { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Calendar', href: '/calendar' },
     { label: 'Open Questions', href: '/forum', badge: questionBadge },
     { label: 'My Research', href: '/forum/my-research' },
     { label: 'Research Library', href: '/forum/library' },
@@ -113,7 +114,7 @@ function InternNav({ questionBadge, collapsed }: { questionBadge: number; collap
       ))}
       {!collapsed && (
         <div className="mx-2 mt-4 border-t border-dashed border-ink-200 pt-3 text-[11px] leading-relaxed text-ink-400">
-          No Matters, Court, Work, Documents, Offline, Reports or Admin. An intern never sees a nav item they cannot use.
+          No Matters, Court, Work, Documents, Offline, Reports or Admin. Calendar is view-only — flag a discrepancy instead of editing. An intern never sees a nav item they cannot use.
         </div>
       )}
     </div>

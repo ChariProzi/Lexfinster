@@ -11,9 +11,21 @@ export function isRole(userId: string | null | undefined, ...roles: Role[]): boo
   return !!u && roles.includes(u.role)
 }
 
-/** Per CONFLICTS_AND_ASSUMPTIONS.md #10 — explicit grant required even for Admin; no silent bypass. */
+/**
+ * Firm-wide matter visibility: Partner and Admin see and can act on every matter in the firm
+ * automatically — no explicit CaseAccessGrant required. Every role below Partner (Associate,
+ * Paralegal, BillingStaff, Intern) remains limited to matters they've been explicitly granted
+ * access to via Case Access Management. (Supersedes the earlier "even an Admin needs an explicit
+ * grant" rule — the firm asked for Partner/Admin to have unrestricted oversight instead.)
+ */
+export function hasFirmWideMatterAccess(userId: string | null | undefined): boolean {
+  const u = getUser(userId)
+  return !!u && (u.role === 'Admin' || u.role === 'Partner')
+}
+
 export function caseAccessLevel(userId: string | null | undefined, matterId: string): CaseAccessLevel {
   if (!userId) return 'NoAccess'
+  if (hasFirmWideMatterAccess(userId)) return 'CaseAdmin'
   const grant = db().caseAccessGrants.find((g) => g.userId === userId && g.matterId === matterId)
   return grant ? grant.level : 'NoAccess'
 }
@@ -27,6 +39,7 @@ export function hasCaseAccess(userId: string | null | undefined, matterId: strin
 
 export function visibleMatterIds(userId: string | null | undefined): Set<string> {
   if (!userId) return new Set()
+  if (hasFirmWideMatterAccess(userId)) return new Set(db().matters.map((m) => m.id))
   return new Set(db().caseAccessGrants.filter((g) => g.userId === userId).map((g) => g.matterId))
 }
 

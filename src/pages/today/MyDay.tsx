@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { Gavel, ListChecks, AlertCircle, CalendarClock } from 'lucide-react'
+import { Gavel, ListChecks, AlertCircle, CalendarClock, ArrowRight } from 'lucide-react'
 import { getMyDay } from '../../api/today'
 import { useSession } from '../../lib/session'
 import { SixState } from '../../components/shared/SixState'
-import { PageHeader } from '../../components/ui/primitives'
+import { PageHeader, Button } from '../../components/ui/primitives'
 import { Section } from '../../components/shared/Layout'
 import { TaskRow } from '../../components/shared/TaskRow'
 import { MatterCard } from '../../components/shared/MatterCard'
@@ -20,7 +20,11 @@ export default function MyDay() {
 
   return (
     <div>
-      <PageHeader title="My Day" description={new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} />
+      <PageHeader
+        title="My Day"
+        description={new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+        actions={<Button variant="secondary" onClick={() => navigate('/calendar')}><CalendarClock className="h-3.5 w-3.5" />Calendar<ArrowRight className="h-3.5 w-3.5" /></Button>}
+      />
       <SixState
         query={query}
         isEmpty={!!data && totalItems === 0}

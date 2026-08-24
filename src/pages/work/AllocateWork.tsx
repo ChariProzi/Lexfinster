@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, ListChecks, ArrowRight } from 'lucide-react'
 import { assignTask, checkAssignmentClash, listUnallocated } from '../../api/work'
 import { useSession } from '../../lib/session'
 import { useDb } from '../../data/db'
@@ -29,7 +29,11 @@ export default function AllocateWork() {
 
   return (
     <div>
-      <PageHeader title="Allocate Work" description="Tasks without an assignee. Assigning grants view access to the matter if the person doesn't already have it." />
+      <PageHeader
+        title="Allocate Work"
+        description="Tasks without an assignee. Assigning grants view access to the matter if the person doesn't already have it."
+        actions={<Button variant="secondary" onClick={() => navigate('/work/all-allocated')}><ListChecks className="h-3.5 w-3.5" />All Allocated Work<ArrowRight className="h-3.5 w-3.5" /></Button>}
+      />
       <SixState
         query={query}
         isEmpty={!!query.data && tasks.length === 0}

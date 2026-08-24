@@ -489,6 +489,12 @@ function buildDprRequests(): T.DataPrincipalRequest[] {
   ]
 }
 
+function buildCalendarFlags(): T.CalendarFlag[] {
+  return [
+    { id: 'cf1', matterId: MATTER.sharma, eventKind: 'hearing', eventLabel: 'Case management hearing', eventDate: relDateOnly(2), note: "Cause list still shows Court 8, but I heard from the SBI counsel's clerk that this bench moved to Court 11 last week — can someone confirm before we send the client a room number?", raisedByUserId: USER.aditi, raisedAt: rel(-1), status: 'Open' },
+  ]
+}
+
 export function buildSeed() {
   const matters = buildMatters()
   return {
@@ -524,6 +530,7 @@ export function buildSeed() {
     researchLibrary: buildResearchLibrary(),
     auditLog: buildAuditLog(),
     dprRequests: buildDprRequests(),
+    calendarFlags: buildCalendarFlags(),
     caseAccessGrants: buildCaseAccessGrants(matters),
     devices: [
       { id: 'dev-rohan-mac', userId: USER.rohan, label: "ROHAN-MBP-01", platform: 'DesktopClient' as const, registeredAt: rel(-200), offlineConsentAt: rel(-200), encryptionKeyRef: 'keychain-ref-1' },

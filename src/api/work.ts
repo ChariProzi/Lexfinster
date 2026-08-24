@@ -174,6 +174,25 @@ export async function saveSopTemplate(userId: string, tmpl: SopTemplate): Promis
   return tmpl
 }
 
+export interface AllocatedWorkRow {
+  task: Task
+  matterTitle: string
+  caseNumber: string
+  assigneeName: string | null
+}
+
+/** Every task the firm has allocated (or left unallocated), across every matter — for Admin/Partner to manage in one place. */
+export async function listAllAllocatedWork(userId: string): Promise<AllocatedWorkRow[]> {
+  await sleep()
+  assertRole(userId, 'Admin', 'Partner')
+  const state = db()
+  return state.tasks.map((task) => {
+    const matter = state.matters.find((m) => m.id === task.matterId)
+    const assignee = task.assigneeId ? getUser(task.assigneeId) : undefined
+    return { task, matterTitle: matter?.title ?? 'Unknown matter', caseNumber: matter?.caseNumber ?? '—', assigneeName: assignee?.name ?? null }
+  })
+}
+
 export async function teamWorkload(userId: string): Promise<{ userId: string; name: string; role: string; tasks: Task[] }[]> {
   await sleep()
   assertRole(userId, 'Admin', 'Partner')

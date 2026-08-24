@@ -6,6 +6,7 @@ import Login from './pages/auth/Login'
 import PlaceholderRoute from './pages/Placeholder'
 import More from './pages/More'
 import MyDay from './pages/today/MyDay'
+import CalendarPage from './pages/calendar/Calendar'
 import Dashboard from './pages/dashboard/Dashboard'
 import AllMatters from './pages/matters/AllMatters'
 import Board from './pages/matters/Board'
@@ -30,11 +31,13 @@ import TaskCreate from './pages/work/TaskCreate'
 import TaskExecution from './pages/work/TaskExecution'
 import ReviewQueue from './pages/work/ReviewQueue'
 import TeamWorkload from './pages/work/TeamWorkload'
+import AllAllocatedWork from './pages/work/AllAllocatedWork'
 import DocumentManager from './pages/documents/DocumentManager'
 import DocumentUpload from './pages/documents/DocumentUpload'
 import DocumentViewer from './pages/documents/DocumentViewer'
 import NotificationCentre from './pages/notifications/NotificationCentre'
 import NotificationPreferences from './pages/notifications/NotificationPreferences'
+import AdminHub from './pages/admin/AdminHub'
 import UsersAndRoles from './pages/admin/UsersAndRoles'
 import AuditLog from './pages/admin/AuditLog'
 import RulePacks from './pages/admin/RulePacks'
@@ -75,6 +78,7 @@ export default function App() {
         <Route index element={<Navigate to="/today" replace />} />
         <Route path="/today" element={<MyDay />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/more" element={<More />} />
 
         <Route path="/matters" element={<AllMatters />} />
@@ -96,6 +100,7 @@ export default function App() {
         <Route path="/work/tasks/:taskId" element={<TaskExecution />} />
         <Route path="/work/review-queue" element={<ReviewQueue />} />
         <Route path="/work/team-workload" element={<RequireRole roles={['Admin', 'Partner']}><TeamWorkload /></RequireRole>} />
+        <Route path="/work/all-allocated" element={<RequireRole roles={['Admin', 'Partner']}><AllAllocatedWork /></RequireRole>} />
 
         <Route path="/court/cause-lists" element={<CauseLists />} />
         <Route path="/court/order-inbox" element={<OrderInbox />} />
@@ -131,6 +136,7 @@ export default function App() {
         <Route path="/reports" element={<RequireRole roles={['Admin', 'Partner']}><Reports /></RequireRole>} />
         <Route path="/reports/at-risk" element={<RequireRole roles={['Admin', 'Partner']}><AtRiskReport /></RequireRole>} />
 
+        <Route path="/admin" element={<RequireRole roles={['Admin']}><AdminHub /></RequireRole>} />
         <Route path="/admin/users" element={<RequireRole roles={['Admin']}><UsersAndRoles /></RequireRole>} />
         <Route path="/admin/case-access" element={<RequireRole roles={['Admin', 'Partner']}><CaseAccess /></RequireRole>} />
         <Route path="/admin/audit-log" element={<RequireRole roles={['Admin']}><AuditLog /></RequireRole>} />

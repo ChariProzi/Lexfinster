@@ -1,6 +1,6 @@
 import { db, nextId } from '../data/db'
 import { sleep, assertOnline } from './client'
-import { assertCaseAccess, visibleMatterIds, isRole, PermissionError } from '../lib/rbac'
+import { assertCaseAccess, visibleMatterIds, PermissionError } from '../lib/rbac'
 import { appendAudit } from '../lib/audit'
 import { scanConflict, computeDeadline } from '../lib/dateEngine'
 import { relDateOnly, isoDateOnly, parseISOSafe } from '../lib/dates'
@@ -8,9 +8,8 @@ import type { Matter, ConflictCheck, Deadline, Party, IntakeType, ImportanceTier
 
 export async function listMatters(userId: string): Promise<Matter[]> {
   await sleep()
+  // Partner/Admin: every firm matter (see hasFirmWideMatterAccess). Everyone else: explicit CaseAccessGrant only.
   const visible = visibleMatterIds(userId)
-  const isFirmWideRole = isRole(userId, 'Admin') // still subject to explicit grants per CONFLICTS_AND_ASSUMPTIONS #10
-  void isFirmWideRole
   return db().matters.filter((m) => visible.has(m.id))
 }
 

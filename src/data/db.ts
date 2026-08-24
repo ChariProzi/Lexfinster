@@ -9,7 +9,7 @@ type DbState = Seed & {
   resetDemoData: () => void
 }
 
-const SEED_VERSION = 7 // bump to force-refresh persisted demo data after a seed shape change
+const SEED_VERSION = 8 // bump to force-refresh persisted demo data after a seed shape change
 
 export const useDb = create<DbState>()(
   persist(

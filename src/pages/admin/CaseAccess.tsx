@@ -43,7 +43,7 @@ export default function CaseAccess() {
 
   return (
     <div>
-      <PageHeader title="Case Access" description="Per-matter access is explicit — even a firm Admin needs a grant here to open a specific matter." />
+      <PageHeader title="Case Access" description="Partners and Admins see every matter automatically. Grant access here for anyone below Partner — Associate, Paralegal, Billing Staff, or Intern — before they can open a specific matter." />
 
       <Section title="Grant access" className="mb-4">
         <div className="grid grid-cols-1 gap-3 p-3.5 sm:grid-cols-[1fr_1fr_auto_auto]">
@@ -56,7 +56,7 @@ export default function CaseAccess() {
           <Field label="Person">
             <Select value={targetUserId} onChange={(e) => setTargetUserId(e.target.value)}>
               <option value="">Select person</option>
-              {users.filter((u) => u.status === 'Active').map((u) => <option key={u.id} value={u.id}>{u.name} · {u.role}</option>)}
+              {users.filter((u) => u.status === 'Active' && u.role !== 'Admin' && u.role !== 'Partner').map((u) => <option key={u.id} value={u.id}>{u.name} · {u.role}</option>)}
             </Select>
           </Field>
           <Field label="Level">
