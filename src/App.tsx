@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import { RequireRole } from './components/layout/RequireRole'
+import { RequireDesktopClient } from './components/layout/RequireDesktopClient'
 import Login from './pages/auth/Login'
 import PlaceholderRoute from './pages/Placeholder'
 import More from './pages/More'
@@ -55,6 +56,14 @@ import HolidayCalendars from './pages/admin/HolidayCalendars'
 import FirmSettings from './pages/admin/FirmSettings'
 import SopTemplateEditor from './pages/admin/SopTemplateEditor'
 import DataRetention from './pages/admin/DataRetention'
+import FirmSetup from './pages/onboarding/FirmSetup'
+import Invite from './pages/onboarding/Invite'
+import DeviceRegistration from './pages/onboarding/DeviceRegistration'
+import CaseBundles from './pages/offline/CaseBundles'
+import CourtMode from './pages/offline/CourtMode'
+import SyncConflicts from './pages/offline/SyncConflicts'
+import StorageSettings from './pages/offline/StorageSettings'
+import OfflineUnavailable from './pages/offline/OfflineUnavailable'
 
 export default function App() {
   return (
@@ -100,11 +109,11 @@ export default function App() {
         <Route path="/drafts" element={<MyDrafts />} />
         <Route path="/drafts/:draftId" element={<DraftWorkspace />} />
 
-        <Route path="/offline/bundles" element={<PlaceholderRoute />} />
-        <Route path="/offline/court-mode/:forumId" element={<PlaceholderRoute />} />
-        <Route path="/offline/sync-conflicts" element={<PlaceholderRoute />} />
-        <Route path="/offline/storage-settings" element={<PlaceholderRoute />} />
-        <Route path="/offline-unavailable" element={<PlaceholderRoute />} />
+        <Route path="/offline/bundles" element={<RequireDesktopClient><CaseBundles /></RequireDesktopClient>} />
+        <Route path="/offline/court-mode/:forumId" element={<RequireDesktopClient><CourtMode /></RequireDesktopClient>} />
+        <Route path="/offline/sync-conflicts" element={<RequireDesktopClient><SyncConflicts /></RequireDesktopClient>} />
+        <Route path="/offline/storage-settings" element={<RequireDesktopClient><StorageSettings /></RequireDesktopClient>} />
+        <Route path="/offline-unavailable" element={<OfflineUnavailable />} />
 
         <Route path="/forum" element={<ForumIndex />} />
         <Route path="/forum/ask" element={<AskQuestion />} />
@@ -131,9 +140,9 @@ export default function App() {
         <Route path="/admin/firm-settings" element={<RequireRole roles={['Admin']}><FirmSettings /></RequireRole>} />
         <Route path="/admin/sop-templates/:templateId" element={<RequireRole roles={['Admin']}><SopTemplateEditor /></RequireRole>} />
 
-        <Route path="/onboarding/firm-setup" element={<PlaceholderRoute />} />
-        <Route path="/onboarding/invite" element={<PlaceholderRoute />} />
-        <Route path="/onboarding/device-registration" element={<PlaceholderRoute />} />
+        <Route path="/onboarding/firm-setup" element={<RequireRole roles={['Admin']}><FirmSetup /></RequireRole>} />
+        <Route path="/onboarding/invite" element={<RequireRole roles={['Admin']}><Invite /></RequireRole>} />
+        <Route path="/onboarding/device-registration" element={<DeviceRegistration />} />
 
         <Route path="*" element={<PlaceholderRoute />} />
       </Route>

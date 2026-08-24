@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { UserPlus } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { UserPlus, Users } from 'lucide-react'
 import { changeUserRole, forceSignOut, inviteUser, listUsers, reactivateUser, suspendUser } from '../../api/admin'
 import { useSession } from '../../lib/session'
 import { SixState } from '../../components/shared/SixState'
@@ -15,6 +16,7 @@ const ROLES: Role[] = ['Admin', 'Partner', 'Associate', 'Paralegal', 'BillingSta
 
 export default function UsersAndRoles() {
   const userId = useSession((s) => s.userId)!
+  const navigate = useNavigate()
   const qc = useQueryClient()
   const query = useQuery({ queryKey: ['admin-users', userId], queryFn: () => listUsers(userId) })
   const [inviteOpen, setInviteOpen] = useState(false)
@@ -47,7 +49,16 @@ export default function UsersAndRoles() {
 
   return (
     <div>
-      <PageHeader title="Users & Roles" description="Firm-level roles. Per-matter access is managed separately in Case Access." actions={<Button variant="primary" onClick={() => setInviteOpen(true)}><UserPlus className="h-3.5 w-3.5" />Invite user</Button>} />
+      <PageHeader
+        title="Users & Roles"
+        description="Firm-level roles. Per-matter access is managed separately in Case Access."
+        actions={
+          <>
+            <Button variant="secondary" onClick={() => navigate('/onboarding/invite')}><Users className="h-3.5 w-3.5" />Bulk invite</Button>
+            <Button variant="primary" onClick={() => setInviteOpen(true)}><UserPlus className="h-3.5 w-3.5" />Invite user</Button>
+          </>
+        }
+      />
       <SixState query={query} onRetry={() => query.refetch()}>
         <div className="rounded-lg border border-ink-200 bg-paper">
           {(query.data ?? []).map((u) => (

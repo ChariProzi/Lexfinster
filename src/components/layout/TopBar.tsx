@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Bell, Search, ChevronDown, LogOut, WifiOff, Wifi, Monitor, RotateCcw } from 'lucide-react'
+import { Bell, Search, ChevronDown, LogOut, WifiOff, Wifi, Monitor, RotateCcw, Laptop } from 'lucide-react'
 import { useDb } from '../../data/db'
 import { useSession } from '../../lib/session'
 import { getUser, displayTitle, visibleMatterIds } from '../../lib/rbac'
@@ -127,6 +127,10 @@ export function TopBar() {
             <button onClick={() => { setDesktopClient(!isDesktopClient); setUserMenuOpen(false); toastInfo(isDesktopClient ? 'Switched to web view.' : 'Switched to desktop-client view — Offline module unlocked.') }} className="flex w-full items-center gap-2 px-3.5 py-2 text-left text-sm text-ink-700 hover:bg-ink-50">
               <Monitor className="h-4 w-4" />
               {isDesktopClient ? 'Switch to web view' : 'Switch to desktop client'}
+            </button>
+            <button onClick={() => { setUserMenuOpen(false); navigate('/onboarding/device-registration') }} className="flex w-full items-center gap-2 px-3.5 py-2 text-left text-sm text-ink-700 hover:bg-ink-50">
+              <Laptop className="h-4 w-4" />
+              Device & offline consent
             </button>
             <button onClick={() => { resetDemoData(); setUserMenuOpen(false); toastInfo('Demo data reset to the seed state.') }} className="flex w-full items-center gap-2 px-3.5 py-2 text-left text-sm text-ink-700 hover:bg-ink-50">
               <RotateCcw className="h-4 w-4" />

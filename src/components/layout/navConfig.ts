@@ -2,7 +2,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   LayoutDashboard, Sun, FolderKanban, Kanban, CalendarDays, Gavel, ScrollText, ListChecks,
   ClipboardList, Users2, FolderOpen, FileEdit, WifiOff, MessageSquareText, Library, Bell,
-  BarChart3, ShieldCheck, Settings2,
+  BarChart3, ShieldCheck, Settings2, RefreshCw, HardDrive,
 } from 'lucide-react'
 import type { Role } from '../../data/types'
 
@@ -66,6 +66,8 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'Case Bundles', href: '/offline/bundles', icon: WifiOff, moduleKey: 'offline' },
       { label: 'Court Mode', href: '/offline/court-mode/current', icon: Gavel, moduleKey: 'offline' },
+      { label: 'Sync Conflicts', href: '/offline/sync-conflicts', icon: RefreshCw, moduleKey: 'offline' },
+      { label: 'Storage Settings', href: '/offline/storage-settings', icon: HardDrive, moduleKey: 'offline' },
     ],
   },
   {

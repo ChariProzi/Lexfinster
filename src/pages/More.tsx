@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { LogOut, Settings2, ChevronRight } from 'lucide-react'
+import { LogOut, Settings2, Laptop, ChevronRight } from 'lucide-react'
 import { useSession } from '../lib/session'
 import { getUser, canSeeModule, displayTitle } from '../lib/rbac'
 import { NAV_GROUPS } from '../components/layout/navConfig'
@@ -47,6 +47,10 @@ export default function More() {
           <div className="divide-y divide-ink-100">
             <button onClick={() => navigate('/settings/notifications')} className="flex w-full items-center justify-between px-3.5 py-2.5 text-left hover:bg-ink-50">
               <span className="flex items-center gap-2.5 text-sm text-ink-800"><Settings2 className="h-4 w-4 text-ink-500" />Notification preferences</span>
+              <ChevronRight className="h-4 w-4 text-ink-300" />
+            </button>
+            <button onClick={() => navigate('/onboarding/device-registration')} className="flex w-full items-center justify-between px-3.5 py-2.5 text-left hover:bg-ink-50">
+              <span className="flex items-center gap-2.5 text-sm text-ink-800"><Laptop className="h-4 w-4 text-ink-500" />Device & offline consent</span>
               <ChevronRight className="h-4 w-4 text-ink-300" />
             </button>
           </div>

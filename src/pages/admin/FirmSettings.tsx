@@ -31,7 +31,11 @@ export default function FirmSettings() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <PageHeader title="Firm Settings" description="Firm profile, subscription, and default document/court-data configuration." />
+      <PageHeader
+        title="Firm Settings"
+        description="Firm profile, subscription, and default document/court-data configuration."
+        actions={<Button variant="ghost" size="sm" onClick={() => navigate('/onboarding/firm-setup')}>Re-run firm setup</Button>}
+      />
       <SixState query={query} onRetry={() => query.refetch()}>
         {form && (
           <div className="flex flex-col gap-4">
