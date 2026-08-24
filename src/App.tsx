@@ -3,6 +3,19 @@ import { AppShell } from './components/layout/AppShell'
 import { RequireRole } from './components/layout/RequireRole'
 import Login from './pages/auth/Login'
 import PlaceholderRoute from './pages/Placeholder'
+import MyDay from './pages/today/MyDay'
+import Dashboard from './pages/dashboard/Dashboard'
+import AllMatters from './pages/matters/AllMatters'
+import Board from './pages/matters/Board'
+import MatterOverview from './pages/matters/MatterOverview'
+import Intake from './pages/matters/Intake'
+import Deadlines from './pages/matters/Deadlines'
+import RuleExplainer from './pages/matters/RuleExplainer'
+import Override from './pages/matters/Override'
+import Docket from './pages/matters/Docket'
+import MatterDocuments from './pages/matters/MatterDocuments'
+import Checklist from './pages/matters/Checklist'
+import ClientRecord from './pages/matters/ClientRecord'
 
 export default function App() {
   return (
@@ -11,22 +24,22 @@ export default function App() {
 
       <Route element={<AppShell />}>
         <Route index element={<Navigate to="/today" replace />} />
-        <Route path="/today" element={<PlaceholderRoute />} />
-        <Route path="/dashboard" element={<PlaceholderRoute />} />
+        <Route path="/today" element={<MyDay />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/more" element={<PlaceholderRoute />} />
 
-        <Route path="/matters" element={<PlaceholderRoute />} />
-        <Route path="/matters/board" element={<PlaceholderRoute />} />
-        <Route path="/matters/new" element={<PlaceholderRoute />} />
-        <Route path="/matters/:matterId" element={<PlaceholderRoute />} />
-        <Route path="/matters/:matterId/deadlines" element={<PlaceholderRoute />} />
-        <Route path="/matters/:matterId/deadlines/:deadlineId/why" element={<PlaceholderRoute />} />
-        <Route path="/matters/:matterId/deadlines/:deadlineId/override" element={<PlaceholderRoute />} />
-        <Route path="/matters/:matterId/docket" element={<PlaceholderRoute />} />
+        <Route path="/matters" element={<AllMatters />} />
+        <Route path="/matters/board" element={<Board />} />
+        <Route path="/matters/new" element={<Intake />} />
+        <Route path="/matters/:matterId" element={<MatterOverview />} />
+        <Route path="/matters/:matterId/deadlines" element={<Deadlines />} />
+        <Route path="/matters/:matterId/deadlines/:deadlineId/why" element={<RuleExplainer />} />
+        <Route path="/matters/:matterId/deadlines/:deadlineId/override" element={<Override />} />
+        <Route path="/matters/:matterId/docket" element={<Docket />} />
         <Route path="/matters/:matterId/orders" element={<PlaceholderRoute />} />
-        <Route path="/matters/:matterId/documents" element={<PlaceholderRoute />} />
-        <Route path="/matters/:matterId/checklist" element={<PlaceholderRoute />} />
-        <Route path="/clients/:clientId" element={<PlaceholderRoute />} />
+        <Route path="/matters/:matterId/documents" element={<MatterDocuments />} />
+        <Route path="/matters/:matterId/checklist" element={<Checklist />} />
+        <Route path="/clients/:clientId" element={<ClientRecord />} />
 
         <Route path="/work/allocate" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
         <Route path="/work/my-worklist" element={<PlaceholderRoute />} />

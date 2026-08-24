@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import type { Task } from '../../data/types'
 import { useDb } from '../../data/db'
+import { useShallow } from 'zustand/react/shallow'
 import { fmt, daysUntil } from '../../lib/dates'
 import { cn } from '../../lib/cn'
 import { Avatar } from '../ui/primitives'
@@ -18,7 +19,7 @@ export function TaskRow({ task }: { task: Task }) {
   const matter = useDb((s) => s.matters.find((m) => m.id === task.matterId))
   const assignee = useDb((s) => s.users.find((u) => u.id === task.assigneeId))
   const reviewer = useDb((s) => s.users.find((u) => u.id === task.reviewerId))
-  const checklist = useDb((s) => s.checklistInstances.filter((c) => c.taskId === task.id))
+  const checklist = useDb(useShallow((s) => s.checklistInstances.filter((c) => c.taskId === task.id)))
   const n = daysUntil(task.dueDate)
   const overdue = n !== null && n < 0 && task.status !== 'Done'
   const allocation = matter ? allocationFor(userId, matter) : 'other'
