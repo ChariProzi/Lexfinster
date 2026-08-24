@@ -39,6 +39,7 @@ import UsersAndRoles from './pages/admin/UsersAndRoles'
 import AuditLog from './pages/admin/AuditLog'
 import RulePacks from './pages/admin/RulePacks'
 import AtRiskReport from './pages/reports/AtRiskReport'
+import Reports from './pages/reports/Reports'
 import NamingRules from './pages/documents/NamingRules'
 import MyDrafts from './pages/documents/MyDrafts'
 import DraftWorkspace from './pages/documents/DraftWorkspace'
@@ -127,7 +128,7 @@ export default function App() {
         <Route path="/notifications" element={<NotificationCentre />} />
         <Route path="/settings/notifications" element={<NotificationPreferences />} />
 
-        <Route path="/reports" element={<RequireRole roles={['Admin', 'Partner']}><PlaceholderRoute /></RequireRole>} />
+        <Route path="/reports" element={<RequireRole roles={['Admin', 'Partner']}><Reports /></RequireRole>} />
         <Route path="/reports/at-risk" element={<RequireRole roles={['Admin', 'Partner']}><AtRiskReport /></RequireRole>} />
 
         <Route path="/admin/users" element={<RequireRole roles={['Admin']}><UsersAndRoles /></RequireRole>} />
