@@ -1,11 +1,11 @@
 # Build Progress — Litigation Practice Management MVP
 
-Status: **COMPLETE** — all documented screens built and QA-verified, plus a Phase 5 of user-requested additions on top of the original spec.
-Last updated: 2026-08-24 (Phase 5)
+Status: **COMPLETE** — all documented screens built and QA-verified, plus Phase 5 (user-requested additions) and a Phase 6 rebrand on top of the original spec.
+Last updated: 2026-08-25 (Phase 6 — rebrand)
 
 ## What this is
 
-This is the actual working React application implementing the Figma wireframes and specs in this project (README.md, DATA_MODEL.md, USER_STORIES.md, API_DESIGN.md, MVP_PHASING.md, ARCHITECTURE.md, CONFLICTS_AND_ASSUMPTIONS.md, schemas.json) — not more wireframes. It runs entirely client-side against a mock data/API layer that simulates a real backend (latency, RBAC errors, audit logging), seeded with a seven-user demo firm ("Kapoor & Associates") and a realistic spread of matters across District Courts, High Courts, NCLT, NCLAT, DRT/DRAT, and ITAT.
+This is the actual working React application implementing the Figma wireframes and specs in this project (README.md, DATA_MODEL.md, USER_STORIES.md, API_DESIGN.md, MVP_PHASING.md, ARCHITECTURE.md, CONFLICTS_AND_ASSUMPTIONS.md, schemas.json) — not more wireframes. It runs entirely client-side against a mock data/API layer that simulates a real backend (latency, RBAC errors, audit logging), seeded with a seven-user demo firm ("Lexfinster") and a realistic spread of matters across District Courts, High Courts, NCLT, NCLAT, DRT/DRAT, and ITAT.
 
 Stack: React 19 + TypeScript + Vite 8 + Tailwind CSS v4, React Router v7, TanStack Query v5, Zustand v5 (persisted to localStorage). The production build compiles to a single self-contained `dist/index.html` (~688 KB) with no external runtime dependencies (no CDN, no fonts fetched at runtime) — safe to open from a file:// URL or host anywhere.
 
@@ -25,6 +25,7 @@ Git history is checkpointed by phase so the work is auditable and revertible:
 - `0b730ec` — Phase 4: Reports & Dashboards index — all 63+3 documented screens now wired
 - `6833729` — Final QA + delivery: fixed a test-script timing bug, verified all screens across all 7 roles with zero console errors
 - `dd776ed` — Phase 5: Calendar, Intern flag-only access, Admin settings search, All Allocated Work, firm-wide Partner matter access
+- `836892d` — Phase 6: rebrand from "Kapoor & Associates" to "Lexfinster"
 
 ## Phase 5 — five gaps the user flagged after reviewing the finished build
 
@@ -36,7 +37,21 @@ Not in the original spec docs — these came from direct user feedback once the 
 4. **All Allocated Work** (`/work/all-allocated`, Admin/Partner) — a filterable, searchable table of every task the firm has allocated (or left unallocated) firm-wide, with an inline reassign control per row. This was a real gap: Team Workload only showed aggregate counts per person with no way to see or act on individual tasks, and Allocate Work only handled tasks with no assignee yet — nothing let an Admin see and manage work that was already allocated. Linked from both of those screens.
 5. **Firm-wide Partner/Admin matter access** — `rbac.ts`'s `caseAccessLevel()`/`visibleMatterIds()` now give Partner and Admin implicit, unrestricted (`CaseAdmin`-level) access to every matter in the firm with no `CaseAccessGrant` required. This is a deliberate reversal of the original spec's "even an Admin needs an explicit grant" rule (CONFLICTS_AND_ASSUMPTIONS #10), made at the user's explicit request. Everyone below Partner — Associate, Paralegal, Billing Staff, Intern — is unaffected and still needs an explicit grant per matter. The Case Access admin screen's copy was updated to describe the new rule.
 
-Verification for this phase: the full existing regression suite (the 61-route sweep as Admin/Partner plus every other role's complete nav click-through) was re-run against the changed RBAC logic with zero regressions, plus a new phase-5 suite that checks actual outcomes rather than just the absence of console errors — exact matter-count assertions (Partner sees all 8 seeded matters, an Associate sees exactly her 3 assigned ones), a toast/state check that a reassignment in All Allocated Work actually changes the displayed assignee, and a check that resolving a discrepancy flag actually flips its badge and byline. Three test-script bugs (not app bugs) were found and fixed along the way: a locator that matched the sidebar's own hint text instead of the modal it was meant to detect, a day-grid iteration that skipped the first calendar week, and a fixed wait that was shorter than the mutation's simulated latency plus its follow-up refetch.
+Verification for this phase: the full existing regression suite (the 61-route sweep as Admin/Partner plus every other role's complete nav click-through) was re-run against the changed RBAC logic with zero regressions, plus a new phase-5 suite that checks actual outcomes rather than just the absence of console errors — exact matter-count assertions (Partner sees all 8 seeded matters, an Associate sees exactly her 3 assigned ones), a toast/state check that a reassignment in All Allocated Work actually changes the displayed assignee, and a check that resolving a discrepancy flag actually flips its badge and byline.
+
+## Phase 6 — rebrand to "Lexfinster"
+
+The firm's displayed name/logo changed from "Kapoor & Associates" to "Lexfinster" per user request. Three of the four visible brand locations (Sidebar logo, Login screen, Dashboard subtitle) now read live from `firm.name` in the store instead of a hardcoded string — a Firm Settings edit will propagate to all three automatically from here on. The fourth, the page `<title>` and favicon in `index.html`, is a static HTML file and was edited directly. `SEED_VERSION` bumped 8 → 9 so existing browser localStorage reseeds with the new name.
+
+Deliberately left unchanged: the seeded demo person name "Meera Kapoor" and seed email addresses like `meera.kapoor@kapoorassociates.in`. These are internal demo flavor data (a person's surname, an email domain), not the firm's displayed brand — changing them wasn't part of "the logo name" and would have meant inventing a new domain/surname with no basis in the request.
+
+Live artifact republished at the same URL: https://claude.ai/code/artifact/aa1d6a85-0bed-4056-a8eb-51968991d684
+
+## GitHub repository — blocked in this environment
+
+The user asked for a GitHub repo to be created for this project. The sandboxed cloud environment this build runs in has placeholder `GH_TOKEN`/`GITHUB_TOKEN` values that do not authenticate (`gh auth status` reports the token invalid; a raw authenticated API call returns a 502 "builtin injection failed" error), and no GitHub MCP connector is available to fall back on. Repository creation could not be completed automatically from here.
+
+The working tree is a clean, fully-checkpointed git repo (see commit history above) — it just needs a remote and a push. The source was delivered to the user as a zip that includes the `.git` folder so the full history transfers intact; instructions for pushing it themselves were included in the delivery message. Three test-script bugs (not app bugs) were found and fixed along the way: a locator that matched the sidebar's own hint text instead of the modal it was meant to detect, a day-grid iteration that skipped the first calendar week, and a fixed wait that was shorter than the mutation's simulated latency plus its follow-up refetch.
 
 ## Everything built and working
 
