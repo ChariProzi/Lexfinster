@@ -13,6 +13,7 @@ import { toastSuccess, toastError } from '../../lib/toast'
 export default function Login() {
   const navigate = useNavigate()
   const users = useDb((s) => s.users)
+  const firmName = useDb((s) => s.firm.name)
   const sessionLogin = useSession((s) => s.login)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -39,7 +40,7 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-surface px-4 py-10">
       <div className="w-full max-w-4xl overflow-hidden rounded-xl border border-ink-200 bg-paper shadow-pop lg:grid lg:grid-cols-2">
         <div className="hidden flex-col justify-between bg-ink-900 p-10 text-white lg:flex">
-          <div className="flex items-center gap-2 text-lg font-semibold"><Scale className="h-5 w-5" /> Kapoor &amp; Associates</div>
+          <div className="flex items-center gap-2 text-lg font-semibold"><Scale className="h-5 w-5" /> {firmName}</div>
           <div>
             <div className="text-2xl font-semibold leading-snug">Practice Manager</div>
             <p className="mt-3 max-w-xs text-sm text-ink-300">
@@ -60,7 +61,7 @@ export default function Login() {
             className="mt-5 flex flex-col gap-3.5"
           >
             <Field label="Email">
-              <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@kapoorassociates.in" />
+              <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@lexfinster.in" />
             </Field>
             <Field label="Password">
               <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Any password works in this preview" />

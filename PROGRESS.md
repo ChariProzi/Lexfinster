@@ -1,13 +1,13 @@
 # Build Progress — Litigation Practice Management MVP
 
-Status: **COMPLETE** — all documented screens built and QA-verified.
-Last updated: 2026-08-24 (final delivery)
+Status: **COMPLETE** — all documented screens built and QA-verified, plus a Phase 5 of user-requested additions on top of the original spec.
+Last updated: 2026-08-24 (Phase 5)
 
 ## What this is
 
 This is the actual working React application implementing the Figma wireframes and specs in this project (README.md, DATA_MODEL.md, USER_STORIES.md, API_DESIGN.md, MVP_PHASING.md, ARCHITECTURE.md, CONFLICTS_AND_ASSUMPTIONS.md, schemas.json) — not more wireframes. It runs entirely client-side against a mock data/API layer that simulates a real backend (latency, RBAC errors, audit logging), seeded with a seven-user demo firm ("Kapoor & Associates") and a realistic spread of matters across District Courts, High Courts, NCLT, NCLAT, DRT/DRAT, and ITAT.
 
-Stack: React 19 + TypeScript + Vite 8 + Tailwind CSS v4, React Router v7, TanStack Query v5, Zustand v5 (persisted to localStorage). The production build compiles to a single self-contained `dist/index.html` (~668 KB) with no external runtime dependencies (no CDN, no fonts fetched at runtime) — safe to open from a file:// URL or host anywhere.
+Stack: React 19 + TypeScript + Vite 8 + Tailwind CSS v4, React Router v7, TanStack Query v5, Zustand v5 (persisted to localStorage). The production build compiles to a single self-contained `dist/index.html` (~688 KB) with no external runtime dependencies (no CDN, no fonts fetched at runtime) — safe to open from a file:// URL or host anywhere.
 
 Live version: https://claude.ai/code/artifact/aa1d6a85-0bed-4056-a8eb-51968991d684 (updated to the final build).
 
@@ -23,12 +23,26 @@ Git history is checkpointed by phase so the work is auditable and revertible:
 - `8a51222` — Phase 2: Drafts, Forum & Interns, and remaining Admin screens
 - `0258a4a` — Phase 3: Offline & Court Mode, plus the three never-wireframed onboarding screens
 - `0b730ec` — Phase 4: Reports & Dashboards index — all 63+3 documented screens now wired
+- `6833729` — Final QA + delivery: fixed a test-script timing bug, verified all screens across all 7 roles with zero console errors
+- `dd776ed` — Phase 5: Calendar, Intern flag-only access, Admin settings search, All Allocated Work, firm-wide Partner matter access
+
+## Phase 5 — five gaps the user flagged after reviewing the finished build
+
+Not in the original spec docs — these came from direct user feedback once the base build was live, and are now built, wired, and QA-verified the same way as everything else:
+
+1. **Calendar** (`/calendar`) — a month-grid view of every upcoming hearing and deadline across the matters a user can see, built from the same visibility rule as everywhere else in the app. Entry points: a "Calendar" button on My Day (the homepage) and a "Calendar" item in the sidebar's Home group, for every role.
+2. **Intern calendar access, view-only** — Interns previously had no nav path into their granted matters at all. They now get the Calendar item, scoped to only the matters explicitly shared with them. Clicking an event opens a read-only detail plus a "Flag a discrepancy" form (not navigation into the matter, which Interns still have no module access to) — the flag notifies the matter's responsible partner and lands in a resolvable "Discrepancy flags raised" queue shown to Admin/Partner directly on the Calendar page. New `CalendarFlag` entity (`src/data/types.ts`), seed data, and `src/api/calendar.ts`.
+3. **Admin settings search** (`/admin`) — a new Admin hub page with a keyword search across every settings screen (Users & Roles, Case Access, Audit Log, Rule Packs, Holiday Calendars, Escalation Rules, Data & Retention, Firm Settings, Document Naming Rules, All Allocated Work, and the three onboarding screens), each entry tagged with search keywords beyond its literal label (e.g. "holiday" also matches on "court closed", "vacation"). Linked as the first item in the Admin nav group.
+4. **All Allocated Work** (`/work/all-allocated`, Admin/Partner) — a filterable, searchable table of every task the firm has allocated (or left unallocated) firm-wide, with an inline reassign control per row. This was a real gap: Team Workload only showed aggregate counts per person with no way to see or act on individual tasks, and Allocate Work only handled tasks with no assignee yet — nothing let an Admin see and manage work that was already allocated. Linked from both of those screens.
+5. **Firm-wide Partner/Admin matter access** — `rbac.ts`'s `caseAccessLevel()`/`visibleMatterIds()` now give Partner and Admin implicit, unrestricted (`CaseAdmin`-level) access to every matter in the firm with no `CaseAccessGrant` required. This is a deliberate reversal of the original spec's "even an Admin needs an explicit grant" rule (CONFLICTS_AND_ASSUMPTIONS #10), made at the user's explicit request. Everyone below Partner — Associate, Paralegal, Billing Staff, Intern — is unaffected and still needs an explicit grant per matter. The Case Access admin screen's copy was updated to describe the new rule.
+
+Verification for this phase: the full existing regression suite (the 61-route sweep as Admin/Partner plus every other role's complete nav click-through) was re-run against the changed RBAC logic with zero regressions, plus a new phase-5 suite that checks actual outcomes rather than just the absence of console errors — exact matter-count assertions (Partner sees all 8 seeded matters, an Associate sees exactly her 3 assigned ones), a toast/state check that a reassignment in All Allocated Work actually changes the displayed assignee, and a check that resolving a discrepancy flag actually flips its badge and byline. Three test-script bugs (not app bugs) were found and fixed along the way: a locator that matched the sidebar's own hint text instead of the modal it was meant to detect, a day-grid iteration that skipped the first calendar week, and a fixed wait that was shorter than the mutation's simulated latency plus its follow-up refetch.
 
 ## Everything built and working
 
 Every screen below is real, wired to the mock API, and RBAC-gated where the spec calls for it (route-level `RequireRole`/`RequireDesktopClient` plus in-component gating for actions like recording a conflict decision or changing someone's role). Permission failures render an inline "not permitted" state, never a crash or a silent redirect, per the spec's Group-M pattern.
 
-**Orientation:** Login (role switcher for demo purposes), My Day, Dashboard, mobile "More" hub.
+**Orientation:** Login (role switcher for demo purposes), My Day, Dashboard, Calendar (month view of every upcoming hearing/deadline, view-only + flag-a-discrepancy for Interns), mobile "More" hub.
 
 **Matters:** All Matters list, Kanban Board, Matter Overview, Deadlines tab (with the "why" rule explainer and the override flow with countersign policy), Docket, Orders & Hearings, Matter Documents, Checklist, Client Record (with the "client is also an opposing party elsewhere" conflict warning).
 
@@ -36,7 +50,7 @@ Every screen below is real, wired to the mock API, and RBAC-gated where the spec
 
 **Court Data:** Court Data Health (per-forum sync status), Cause Lists, Order Inbox, Order Review (confidence banner, extracted fields, confirm / needs-more-info with a required reason), Manual Upload.
 
-**Work:** Allocate Work (with live assignment-clash checking), My Worklist, Task Create (with linked-deadline and SOP-template selection), Task Execution (full lifecycle: block/resume, submit for review, approve, return with comments, mark complete, two-step confirmation for limitation-linked tasks), Review Queue, Team Workload.
+**Work:** Allocate Work (with live assignment-clash checking), My Worklist, Task Create (with linked-deadline and SOP-template selection), Task Execution (full lifecycle: block/resume, submit for review, approve, return with comments, mark complete, two-step confirmation for limitation-linked tasks), Review Queue, Team Workload, All Allocated Work (firm-wide, filterable, reassignable table of every allocated task).
 
 **Documents:** Document Manager, Document Upload (with post-upload extraction review), Document Viewer (annotation toolbar, privacy selector, retry-OCR), Naming Rules admin (token pattern, separator, case style, per-doc-type overrides with live preview), My Drafts, Draft Workspace (draft/share/publish with per-user sharing).
 
@@ -44,7 +58,7 @@ Every screen below is real, wired to the mock API, and RBAC-gated where the spec
 
 **Notifications:** Notification Centre (category tabs, mark-read, mark-all-read, escalation chain), Notification Preferences (per-event channel/quiet-hours/override).
 
-**Admin:** Users & Roles (invite, per-row role change with the "reassign Case Admin first" guard, suspend/reactivate/force sign-out, bulk-invite link), Audit Log, Rule Packs, Case Access Management (grant/change/revoke, independent of firm role), Escalation Rules (per-tier steps and channels), Holiday Calendars, Firm Settings (profile + SOP Templates list + re-run-firm-setup link), SOP Template Editor, Data Retention (DPR request handling).
+**Admin:** Admin Hub (keyword search across every settings screen), Users & Roles (invite, per-row role change with the "reassign Case Admin first" guard, suspend/reactivate/force sign-out, bulk-invite link), Audit Log, Rule Packs, Case Access Management (grant/change/revoke for anyone below Partner), Escalation Rules (per-tier steps and channels), Holiday Calendars, Firm Settings (profile + SOP Templates list + re-run-firm-setup link), SOP Template Editor, Data Retention (DPR request handling).
 
 **Reports & Dashboards:** tabbed index covering all five reports — Deadline Compliance, Matter Pipeline, Workload & Throughput, Court Data Reliability, Hearing Schedule (each row/chip links through to the relevant matter) — plus the standalone At-Risk Matters report.
 
@@ -67,7 +81,7 @@ All caught by driving the actual built app with Playwright against a production 
 - Meera is modeled as both Partner and (for the demo) the firm's sole Admin, per the seed data.
 - Countersign policy: an Associate's deadline override requires Partner/Admin countersign; a Partner/Admin override is immediate.
 - Conflict checks are advisory-only by design — the system computes a result but a human always makes the call, with a mandatory reason recorded to the audit log.
-- Per-matter access is a separate, explicit grant from firm-level role — per CONFLICTS_AND_ASSUMPTIONS #10, even an Admin needs an explicit `CaseAccessGrant` to open a specific matter.
+- Per-matter access for anyone below Partner (Associate, Paralegal, Billing Staff, Intern) is a separate, explicit `CaseAccessGrant` from firm-level role. **Updated in Phase 5**: Partner and Admin now have implicit, firm-wide access to every matter with no grant needed — this reverses the original spec's CONFLICTS_AND_ASSUMPTIONS #10 ("even an Admin needs an explicit grant"), per the user's explicit request once they saw the finished build.
 - The conflict-scanning engine is a fuzzy name matcher that returns `Clear` or `PotentialConflict`; `Blocked` exists as a type-level value in the schema but nothing in the spec required a stricter matcher.
 - Three onboarding screens (Firm Setup, Invite, Device Registration) were never wireframed in the source docs (confirmed via README.md, CONFLICTS_AND_ASSUMPTIONS.md #8, and schemas.json's `notWireframed` list) — these were designed from `DATA_MODEL.md`'s Firm/User/Device shapes and `API_DESIGN.md`'s auth/firm/users endpoints, matching the "2-4 screens left to create" note in the original instructions.
 - A few admin/offline screens are honestly simplified where no matching mutating API exists rather than inventing unsupported functionality: Holiday Calendars only edits existing calendars (no add-new-calendar endpoint); Firm Setup's forums step is read-only (no forums-CRUD endpoint); Storage Settings only displays usage and purges (no update-settings endpoint).

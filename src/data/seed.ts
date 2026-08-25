@@ -59,7 +59,7 @@ function buildUsers(): T.User[] {
 function buildFirm(): T.Firm {
   return {
     id: FIRM_ID,
-    name: 'Kapoor & Associates',
+    name: 'Lexfinster',
     registeredAddress: '4th Floor, Aggarwal Chambers, Bhagwan Das Road, New Delhi 110001',
     subscriptionPlan: 'Growth',
     seatsPurchased: 10,

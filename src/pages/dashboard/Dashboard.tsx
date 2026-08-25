@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { getDashboard } from '../../api/today'
 import { useSession } from '../../lib/session'
+import { useDb } from '../../data/db'
 import { getUser, displayTitle } from '../../lib/rbac'
 import { SixState } from '../../components/shared/SixState'
 import { PageHeader, Card } from '../../components/ui/primitives'
@@ -21,12 +22,13 @@ function StatTile({ label, value, href, tone }: { label: string; value: number; 
 export default function Dashboard() {
   const userId = useSession((s) => s.userId)!
   const user = getUser(userId)!
+  const firmName = useDb((s) => s.firm.name)
   const query = useQuery({ queryKey: ['dashboard', userId], queryFn: () => getDashboard(userId) })
   const data = query.data
 
   return (
     <div>
-      <PageHeader title={`Welcome back, ${user.name.split(' ')[0]}`} description={`${displayTitle(user)} · Kapoor & Associates`} />
+      <PageHeader title={`Welcome back, ${user.name.split(' ')[0]}`} description={`${displayTitle(user)} · ${firmName}`} />
       <SixState query={query} onRetry={() => query.refetch()}>
         {data && (
           <div className="flex flex-col gap-5">

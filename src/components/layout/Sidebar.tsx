@@ -14,6 +14,7 @@ export function Sidebar() {
   const isDesktopClient = useSession((s) => s.isDesktopClient)
   const orders = useDb((s) => s.orders)
   const questions = useDb((s) => s.forumQuestions)
+  const firmName = useDb((s) => s.firm.name)
   const visibleMatters = useDb((s) => s.caseAccessGrants.filter((g) => g.userId === userId).length)
   const user = getUser(userId)
   if (!user) return null
@@ -29,7 +30,7 @@ export function Sidebar() {
         {!collapsed && (
           <div className="flex items-center gap-2 font-semibold text-ink-900">
             <Scale className="h-4.5 w-4.5" />
-            <span className="text-sm">Kapoor &amp; Associates</span>
+            <span className="text-sm">{firmName}</span>
           </div>
         )}
         {collapsed && <Scale className="mx-auto h-5 w-5 text-ink-900" />}
